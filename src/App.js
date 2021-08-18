@@ -1,9 +1,20 @@
-import { ModelViewer3D } from "./components";
+import { ModelViewer3D, ModelViewerAR, ModelViewer } from "./components";
+
+const TEST_SLUG = "test-model-for-component-docs-3";
+const TEST_SLUG_2 = "padelracket-2";
 
 function App() {
   return (
     <div>
-      <ModelViewer3D />
+      <ModelViewer slug={TEST_SLUG}>
+        <img
+          src="https://pbs.twimg.com/profile_images/1343584679664873479/Xos3xQfk_400x400.jpg"
+          alt="poster"
+          slot="poster"
+        />
+      </ModelViewer>
+      <ModelViewer3D slug={TEST_SLUG_2} />
+      <ModelViewerAR slug={TEST_SLUG_2} />
     </div>
   );
 }

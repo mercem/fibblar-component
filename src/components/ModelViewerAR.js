@@ -1,18 +1,15 @@
 import React, { useEffect } from "react";
 import "@google/model-viewer";
-import posterAstronaut from "./poster-astronaut.png";
 import "./movel-viewer.css";
 
 const TEST_SLUG = "test-model-for-component-docs-3";
 const HEIGHT = "40px";
 const WIDTH = "100px";
-const DEFAULT_IMG = posterAstronaut;
 
 const ModelViewerAR = ({
   slug = TEST_SLUG,
   height = HEIGHT,
   width = WIDTH,
-  img = DEFAULT_IMG,
 }) => {
   useEffect(() => {
     const script = document.createElement("script");

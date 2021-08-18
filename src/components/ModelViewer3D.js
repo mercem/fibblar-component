@@ -2,11 +2,10 @@ import React, { useEffect } from "react";
 import "@google/model-viewer";
 import "./movel-viewer.css";
 
-const TEST_SLUG = "test-model-for-component-docs-3";
 const HEIGHT = "400px";
 const WIDTH = "400px";
 
-const ModelViewer = ({ slug = TEST_SLUG, height = HEIGHT, width = WIDTH }) => {
+const ModelViewer = ({ slug, height = HEIGHT, width = WIDTH }) => {
   useEffect(() => {
     const script = document.createElement("script");
     script.src =
