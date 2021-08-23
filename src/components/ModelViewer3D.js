@@ -1,26 +1,47 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "@google/model-viewer";
 import "./movel-viewer.css";
 
 const HEIGHT = "400px";
 const WIDTH = "400px";
 
-const ModelViewer = ({ slug, height = HEIGHT, width = WIDTH }) => {
+const ModelViewer = ({ slug, height = HEIGHT, width = WIDTH, autoRotate }) => {
+  const [source, setSource] = useState("");
+
   useEffect(() => {
-    const script = document.createElement("script");
-    script.src =
-      "https://fibblar-component-scripts.s3.eu-north-1.amazonaws.com/fibblar-component-3donly.js";
-    script.async = true;
-    script.id = "fibblar-script";
-    document.body.appendChild(script);
-    return () => {
-      document.body.removeChild(script);
-    };
-  }, []);
+    fetch(
+      ` https://trhutwsr8i.execute-api.eu-north-1.amazonaws.com/karl/modelSource/v1/${slug}`,
+      { method: "get" }
+    )
+      .then((data) => data.json())
+      .then(({ models }) => {
+        if (models) {
+          setSource(
+            `https://model-catalogue-bucket-karl.s3.eu-north-1.amazonaws.com/${models.source}`
+          );
+        } else {
+          setSource(`${this.getAttribute("source")}`);
+        }
+      });
+  }, [slug]);
 
   return (
     <div style={{ height, width }}>
-      <fibblar-component-3d slug={slug}></fibblar-component-3d>
+      <model-viewer
+        style={{
+          height: "100%",
+          width: "100%",
+          "--poster-color": "transparent",
+          "--progress-mask": "transparent",
+        }}
+        exposure="1"
+        environment-image="https://model-catalogue-bucket-karl.s3.eu-north-1.amazonaws.com/HDRI_v11.hdr"
+        src={source}
+        data-js-focus-visible
+        alt="A 3D model"
+        camera-controls
+        auto-rotate={autoRotate ? true : null}
+      ></model-viewer>
     </div>
   );
 };

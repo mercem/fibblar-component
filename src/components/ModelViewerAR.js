@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "@google/model-viewer";
 import "./movel-viewer.css";
 
@@ -10,26 +10,54 @@ const ModelViewerAR = ({
   slug = TEST_SLUG,
   height = HEIGHT,
   width = WIDTH,
+  children,
 }) => {
+  const [source, setSource] = useState("");
+  const [iosSource, setIosSource] = useState("");
+
   useEffect(() => {
-    const script = document.createElement("script");
-    script.src =
-      "https://fibblar-component-scripts.s3.eu-north-1.amazonaws.com/fibblar-component-ARonly.js";
-    script.async = true;
-    script.id = "fibblar-script";
-    document.body.appendChild(script);
-    return () => {
-      document.body.removeChild(script);
-    };
-  }, []);
+    fetch(
+      ` https://trhutwsr8i.execute-api.eu-north-1.amazonaws.com/karl/modelSource/v1/${slug}`,
+      { method: "get" }
+    )
+      .then((data) => data.json())
+      .then(({ models }) => {
+        if (models) {
+          setSource(
+            `https://model-catalogue-bucket-karl.s3.eu-north-1.amazonaws.com/${models.source}`
+          );
+          setIosSource(
+            `https://model-catalogue-bucket-karl.s3.eu-north-1.amazonaws.com/${models.iosSource}`
+          );
+        } else {
+          setSource(`${this.getAttribute("source")}`);
+          setIosSource(`${this.getAttribute("iosSource")}`);
+        }
+      });
+  }, [slug]);
 
   return (
     <div style={{ height, width }}>
-      <fibblar-component-ar slug={slug}>
-        <button slot="ar-button" className="ar-placement-button">
-          See In AR
-        </button>
-      </fibblar-component-ar>
+      <model-viewer
+        style={{
+          height: "100%",
+          width: "100%",
+          "--poster-color": "transparent",
+          "--progress-mask": "transparent",
+        }}
+        reveal="manual"
+        ar
+        ar-modes="webxr scene-viewer quick-look"
+        exposure="1"
+        environment-image="https://model-catalogue-bucket-karl.s3.eu-north-1.amazonaws.com/HDRI_v11.hdr"
+        src={source}
+        ios-src={iosSource}
+        data-js-focus-visible
+        alt="A 3D model"
+        camera-controls
+      >
+        {children}
+      </model-viewer>
     </div>
   );
 };
