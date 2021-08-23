@@ -38,26 +38,28 @@ const ModelViewerAR = ({
 
   return (
     <div style={{ height, width }}>
-      <model-viewer
-        style={{
-          height: "100%",
-          width: "100%",
-          "--poster-color": "transparent",
-          "--progress-mask": "transparent",
-        }}
-        reveal="manual"
-        ar
-        ar-modes="webxr scene-viewer quick-look"
-        exposure="1"
-        environment-image="https://model-catalogue-bucket-karl.s3.eu-north-1.amazonaws.com/HDRI_v11.hdr"
-        src={source}
-        ios-src={iosSource}
-        data-js-focus-visible
-        alt="A 3D model"
-        camera-controls
-      >
-        {children}
-      </model-viewer>
+      {source ? (
+        <model-viewer
+          style={{
+            height: "100%",
+            width: "100%",
+            "--poster-color": "transparent",
+            "--progress-mask": "transparent",
+          }}
+          reveal="manual"
+          ar
+          ar-modes="webxr scene-viewer quick-look"
+          exposure="1"
+          environment-image="https://model-catalogue-bucket-karl.s3.eu-north-1.amazonaws.com/HDRI_v11.hdr"
+          src={source}
+          ios-src={iosSource}
+          data-js-focus-visible
+          alt="A 3D model"
+          camera-controls
+        >
+          {children}
+        </model-viewer>
+      ) : null}
     </div>
   );
 };

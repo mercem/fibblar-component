@@ -27,21 +27,23 @@ const ModelViewer = ({ slug, height = HEIGHT, width = WIDTH, autoRotate }) => {
 
   return (
     <div style={{ height, width }}>
-      <model-viewer
-        style={{
-          height: "100%",
-          width: "100%",
-          "--poster-color": "transparent",
-          "--progress-mask": "transparent",
-        }}
-        exposure="1"
-        environment-image="https://model-catalogue-bucket-karl.s3.eu-north-1.amazonaws.com/HDRI_v11.hdr"
-        src={source}
-        data-js-focus-visible
-        alt="A 3D model"
-        camera-controls
-        auto-rotate={autoRotate ? true : null}
-      ></model-viewer>
+      {source ? (
+        <model-viewer
+          style={{
+            height: "100%",
+            width: "100%",
+            "--poster-color": "transparent",
+            "--progress-mask": "transparent",
+          }}
+          exposure="1"
+          environment-image="https://model-catalogue-bucket-karl.s3.eu-north-1.amazonaws.com/HDRI_v11.hdr"
+          src={source}
+          data-js-focus-visible
+          alt="A 3D model"
+          camera-controls
+          auto-rotate={autoRotate ? true : null}
+        ></model-viewer>
+      ) : null}
     </div>
   );
 };
